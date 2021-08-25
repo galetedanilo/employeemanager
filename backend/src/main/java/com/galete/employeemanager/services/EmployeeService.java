@@ -13,12 +13,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.galete.employeemanager.entities.Employee;
-import com.galete.employeemanager.reporitories.EmployeeRepository;
+import com.galete.employeemanager.repositories.EmployeeRepository;
 import com.galete.employeemanager.request.EmployeeRequest;
 import com.galete.employeemanager.response.EmployeeResponse;
 import com.galete.employeemanager.services.exceptions.DatabaseException;
 import com.galete.employeemanager.services.exceptions.ResourceNotFoundException;
 import com.galete.employeemanager.services.exceptions.UserNotFoundException;
+import com.galete.employeemanager.services.exceptions.UsernameExistsException;
 
 import lombok.AllArgsConstructor;
 
@@ -27,6 +28,8 @@ import lombok.AllArgsConstructor;
 public class EmployeeService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final String USER_NOT_FOUND_MESSAGE = "User by id %s was not found";
 	
 	private final EmployeeRepository repository;
 	
@@ -40,6 +43,12 @@ public class EmployeeService implements Serializable {
 	}
 	
 	public EmployeeResponse addEmployee(EmployeeRequest request) {
+		
+		Boolean userExists = repository.findByEmail(request.getEmail()).isPresent();
+		
+		if(userExists) {
+			throw new UsernameExistsException("Email already taken");
+		}
 		
 		Employee entity = new Employee();
 		
@@ -55,7 +64,7 @@ public class EmployeeService implements Serializable {
 	public EmployeeResponse findEmployeeById(Long id) {
 		Optional<Employee> optional = repository.findById(id);
 		
-		Employee entity = optional.orElseThrow(() -> new UserNotFoundException("User by id " + id + " was not found"));
+		Employee entity = optional.orElseThrow(() -> new UserNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, id)));
 		
 		return new EmployeeResponse(entity);
 	}

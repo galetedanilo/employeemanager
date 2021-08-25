@@ -2,6 +2,7 @@ package com.galete.employeemanager.request;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ public class EmployeeRequest implements Serializable {
 	
 	@NotBlank(message = "name is required")
 	private String name;
+	@Email(message = "email not valid")
 	@NotBlank(message = "email is required")
 	private String email;
 	@NotBlank(message = "job title is required")
