@@ -39,7 +39,6 @@ public class EmployeeService implements Serializable {
 		entity.setPhone(request.getPhone());
 		entity.setJobTitle(request.getJobTitle());
 		entity.setImageUrl(request.getImageUrl());
-		entity.setEmployeeCode(request.getEmployeeCode());
 	}
 	
 	public EmployeeResponse addEmployee(EmployeeRequest request) {
@@ -52,9 +51,9 @@ public class EmployeeService implements Serializable {
 		
 		Employee entity = new Employee();
 		
-		request.setEmployeeCode(UUID.randomUUID().toString());
-		
 		copyRequestToEntity(request, entity);
+		
+		entity.setEmployeeCode(UUID.randomUUID().toString());
 		
 		entity = repository.save(entity);
 		

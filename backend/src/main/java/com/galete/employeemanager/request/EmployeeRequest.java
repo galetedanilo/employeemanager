@@ -28,5 +28,4 @@ public class EmployeeRequest implements Serializable {
 	@NotBlank(message = "phone is required")
 	private String phone;
 	private String imageUrl;
-	private String employeeCode;
 }

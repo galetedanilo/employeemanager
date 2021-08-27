@@ -1,0 +1,4 @@
+INSERT INTO tb_employee(name, email, job_Title, phone, employee_Code, image_Url) VALUES ('Pedro Souza', 'pedro@gmail.com', 'Java', '3045897668', 'ldo458doi-89a78d-daof25hfook', 'https://bootdey.com/img/Content/avatar/avatar1.png');
+INSERT INTO tb_employee(name, email, job_Title, phone, employee_Code, image_Url) VALUES ('Joao de Deus', 'joao@gmail.com', 'UX/UI', '3045897668', 'ldo458doi-89a78d-daof25hfook', 'https://bootdey.com/img/Content/avatar/avatar6.png');
+INSERT INTO tb_employee(name, email, job_Title, phone, employee_Code, image_Url) VALUES ('Maria Beatriz', 'maria@gmail.com', 'Angular', '3045897668', 'ldo458doi-89a78d-daof25hfook', 'https://bootdey.com/img/Content/avatar/avatar4.png');
+INSERT INTO tb_employee(name, email, job_Title, phone, employee_Code, image_Url) VALUES ('Angela Cruz', 'angela@gmail.com', 'Java/PHP', '3045897668', 'ldo458doi-89a78d-daof25hfook', 'https://bootdey.com/img/Content/avatar/avatar8.png');
