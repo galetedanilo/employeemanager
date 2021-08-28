@@ -10,5 +10,5 @@ import com.galete.employeemanager.entities.Employee;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-	Optional<Employee> findByEmail(String email);
+	Optional<Employee> findByName(String email);
 }

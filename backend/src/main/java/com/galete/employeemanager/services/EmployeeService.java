@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.galete.employeemanager.entities.Employee;
+import com.galete.employeemanager.mappers.EmployeeMapper;
 import com.galete.employeemanager.repositories.EmployeeRepository;
 import com.galete.employeemanager.request.EmployeeRequest;
 import com.galete.employeemanager.response.EmployeeResponse;
@@ -33,31 +34,23 @@ public class EmployeeService implements Serializable {
 	
 	private final EmployeeRepository repository;
 	
-	private void copyRequestToEntity(EmployeeRequest request, Employee entity) {
-		entity.setName(request.getName());
-		entity.setEmail(request.getEmail());
-		entity.setPhone(request.getPhone());
-		entity.setJobTitle(request.getJobTitle());
-		entity.setImageUrl(request.getImageUrl());
-	}
-	
+	private final EmployeeMapper mapper = EmployeeMapper.INSTANCE;
+		
 	public EmployeeResponse addEmployee(EmployeeRequest request) {
 		
-		Boolean userExists = repository.findByEmail(request.getEmail()).isPresent();
+		Boolean userExists = repository.findByName(request.getName()).isPresent();
 		
 		if(userExists) {
 			throw new UsernameExistsException("Email already taken");
 		}
 		
-		Employee entity = new Employee();
-		
-		copyRequestToEntity(request, entity);
-		
+		Employee entity = mapper.employeeRequestToEmployee(request);
+			
 		entity.setEmployeeCode(UUID.randomUUID().toString());
 		
 		entity = repository.save(entity);
 		
-		return new EmployeeResponse(entity);
+		return mapper.employeeToEmployeeResponse(entity);
 	}
 	
 	public EmployeeResponse findEmployeeById(Long id) {
@@ -65,11 +58,11 @@ public class EmployeeService implements Serializable {
 		
 		Employee entity = optional.orElseThrow(() -> new UserNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, id)));
 		
-		return new EmployeeResponse(entity);
+		return mapper.employeeToEmployeeResponse(entity);
 	}
 	
 	public Page<EmployeeResponse> findAllEmployees(Pageable pageable) {
-		return repository.findAll(pageable).map(x -> new EmployeeResponse(x));
+		return repository.findAll(pageable).map(x -> mapper.employeeToEmployeeResponse(x));
 	}
 	
 	public EmployeeResponse updateEmployee(Long id, EmployeeRequest request) {
@@ -77,11 +70,11 @@ public class EmployeeService implements Serializable {
 		try {
 			Employee entity = repository.getById(id);
 			
-			copyRequestToEntity(request, entity);
+			entity = mapper.employeeRequestToEmployee(request);
 			
 			entity = repository.save(entity);
 			
-			return new EmployeeResponse(entity);
+			return mapper.employeeToEmployeeResponse(entity);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}		

@@ -6,12 +6,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeRequest implements Serializable {
@@ -20,12 +20,16 @@ public class EmployeeRequest implements Serializable {
 	
 	@NotBlank(message = "name is required")
 	private String name;
+	
 	@Email(message = "email not valid")
 	@NotBlank(message = "email is required")
 	private String email;
+	
 	@NotBlank(message = "job title is required")
 	private String jobTitle;
+	
 	@NotBlank(message = "phone is required")
 	private String phone;
+	
 	private String imageUrl;
 }
