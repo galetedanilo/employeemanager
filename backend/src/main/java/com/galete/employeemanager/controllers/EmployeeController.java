@@ -50,6 +50,11 @@ public class EmployeeController {
 						WebMvcLinkBuilder.methodOn(EmployeeController.class)
 							.findAllEmployees(PageRequest.of(0, 20))).withRel("Find All Employees"));
 		
+		response.add(WebMvcLinkBuilder.linkTo(
+						WebMvcLinkBuilder.methodOn(EmployeeController.class)
+							.deleteEmployee(id)).withRel("Delete Employee"));
+		
+		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
