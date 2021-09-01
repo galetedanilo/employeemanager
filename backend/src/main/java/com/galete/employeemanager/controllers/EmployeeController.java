@@ -28,65 +28,72 @@ import lombok.AllArgsConstructor;
 public class EmployeeController {
 
 	private final EmployeeService service;
-	
+
 	@GetMapping("/all")
 	public ResponseEntity<Page<EmployeeResponse>> findAllEmployees(Pageable pageable) {
-		
+
 		Page<EmployeeResponse> page = service.findAllEmployees(pageable);
-		
-		page.map(x -> x.add(WebMvcLinkBuilder.linkTo(
-								WebMvcLinkBuilder.methodOn(EmployeeController.class)
-									.findEmployeeById(x.getEmployeeId())).withSelfRel()));
-		
+
+		page.forEach(x -> {
+
+			x.add(WebMvcLinkBuilder
+					.linkTo(WebMvcLinkBuilder.methodOn(EmployeeController.class).findEmployeeById(x.getEmployeeId()))
+					.withSelfRel());
+			
+			x.add(WebMvcLinkBuilder
+					.linkTo(WebMvcLinkBuilder.methodOn(EmployeeController.class).deleteEmployee(x.getEmployeeId()))
+					.withRel("Delete Employee"));
+		});
+
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/find/{id}")
 	public ResponseEntity<EmployeeResponse> findEmployeeById(@PathVariable("id") Long id) {
-		
+
 		EmployeeResponse response = service.findEmployeeById(id);
-				
-		response.add(WebMvcLinkBuilder.linkTo(
-						WebMvcLinkBuilder.methodOn(EmployeeController.class)
-							.findAllEmployees(PageRequest.of(0, 20))).withRel("Find All Employees"));
-		
-		response.add(WebMvcLinkBuilder.linkTo(
-						WebMvcLinkBuilder.methodOn(EmployeeController.class)
-							.deleteEmployee(id)).withRel("Delete Employee"));
-		
-		
+
+		response.add(WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(EmployeeController.class).findAllEmployees(PageRequest.of(0, 20)))
+				.withRel("Find All Employees"));
+
+		response.add(WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(EmployeeController.class).deleteEmployee(id))
+				.withRel("Delete Employee"));
+
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/add")
 	public ResponseEntity<EmployeeResponse> addEmployee(@Validated @RequestBody EmployeeRequest request) {
-		
+
 		EmployeeResponse response = service.addEmployee(request);
-		
-		response.add(WebMvcLinkBuilder.linkTo(
-						WebMvcLinkBuilder.methodOn(EmployeeController.class)
-							.findAllEmployees(PageRequest.of(0, 20))).withRel("Find All Employees"));
-		
+
+		response.add(WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(EmployeeController.class).findAllEmployees(PageRequest.of(0, 20)))
+				.withRel("Find All Employees"));
+
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
-	
+
 	@PutMapping("/update/{id}")
-	public ResponseEntity<EmployeeResponse> updateEmployee(@PathVariable("id") Long id, @Validated @RequestBody EmployeeRequest request) {
-		
+	public ResponseEntity<EmployeeResponse> updateEmployee(@PathVariable("id") Long id,
+			@Validated @RequestBody EmployeeRequest request) {
+
 		EmployeeResponse response = service.updateEmployee(id, request);
-		
-		response.add(WebMvcLinkBuilder.linkTo(
-				WebMvcLinkBuilder.methodOn(EmployeeController.class)
-					.findAllEmployees(PageRequest.of(0, 20))).withRel("Find All Employees"));
-		
+
+		response.add(WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(EmployeeController.class).findAllEmployees(PageRequest.of(0, 20)))
+				.withRel("Find All Employees"));
+
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Void> deleteEmployee(@PathVariable("id") Long id) {
-		
+
 		service.deleteEmployee(id);
-		
+
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

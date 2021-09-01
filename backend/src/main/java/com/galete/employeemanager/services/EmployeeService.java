@@ -68,9 +68,9 @@ public class EmployeeService implements Serializable {
 	public EmployeeResponse updateEmployee(Long id, EmployeeRequest request) {
 		
 		try {
-			Employee entity = repository.getById(id);
+			Employee entity = mapper.employeeRequestToEmployee(request);
 			
-			entity = mapper.employeeRequestToEmployee(request);
+			entity.setId(id);	
 			
 			entity = repository.save(entity);
 			
