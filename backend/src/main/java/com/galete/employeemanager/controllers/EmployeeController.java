@@ -27,12 +27,12 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api/v1/employee")
 public class EmployeeController {
 
-	private final EmployeeService service;
+	private final EmployeeService employeeService;
 
 	@GetMapping("/all")
 	public ResponseEntity<Page<EmployeeResponse>> findAllEmployees(Pageable pageable) {
 
-		Page<EmployeeResponse> page = service.findAllEmployees(pageable);
+		Page<EmployeeResponse> page = employeeService.findAllEmployees(pageable);
 
 		page.forEach(x -> {
 
@@ -51,7 +51,7 @@ public class EmployeeController {
 	@GetMapping("/find/{id}")
 	public ResponseEntity<EmployeeResponse> findEmployeeById(@PathVariable("id") Long id) {
 
-		EmployeeResponse response = service.findEmployeeById(id);
+		EmployeeResponse response = employeeService.findEmployeeById(id);
 
 		response.add(WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder.methodOn(EmployeeController.class).findAllEmployees(PageRequest.of(0, 20)))
@@ -67,7 +67,7 @@ public class EmployeeController {
 	@PostMapping("/add")
 	public ResponseEntity<EmployeeResponse> addEmployee(@Validated @RequestBody EmployeeRequest request) {
 
-		EmployeeResponse response = service.addEmployee(request);
+		EmployeeResponse response = employeeService.addEmployee(request);
 
 		response.add(WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder.methodOn(EmployeeController.class).findAllEmployees(PageRequest.of(0, 20)))
@@ -80,7 +80,7 @@ public class EmployeeController {
 	public ResponseEntity<EmployeeResponse> updateEmployee(@PathVariable("id") Long id,
 			@Validated @RequestBody EmployeeRequest request) {
 
-		EmployeeResponse response = service.updateEmployee(id, request);
+		EmployeeResponse response = employeeService.updateEmployee(id, request);
 
 		response.add(WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder.methodOn(EmployeeController.class).findAllEmployees(PageRequest.of(0, 20)))
@@ -92,7 +92,7 @@ public class EmployeeController {
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Void> deleteEmployee(@PathVariable("id") Long id) {
 
-		service.deleteEmployee(id);
+		employeeService.deleteEmployee(id);
 
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

@@ -32,49 +32,49 @@ public class EmployeeService implements Serializable {
 	
 	private static final String USER_NOT_FOUND_MESSAGE = "User by id %s was not found";
 	
-	private final EmployeeRepository repository;
+	private final EmployeeRepository employeeRepository;
 	
-	private final EmployeeMapper mapper = EmployeeMapper.INSTANCE;
+	private final EmployeeMapper employeeMapper = EmployeeMapper.INSTANCE;
 		
-	public EmployeeResponse addEmployee(EmployeeRequest request) {
+	public EmployeeResponse addEmployee(EmployeeRequest employeeRequest) {
 		
-		Boolean userExists = repository.findByName(request.getName()).isPresent();
+		Boolean userExists = employeeRepository.findByName(employeeRequest.getName()).isPresent();
 		
 		if(userExists) {
 			throw new UsernameExistsException("Email already taken");
 		}
 		
-		Employee entity = mapper.employeeRequestToEmployee(request);
+		Employee employeeEntity = employeeMapper.employeeRequestToEmployee(employeeRequest);
 			
-		entity.setEmployeeCode(UUID.randomUUID().toString());
+		employeeEntity.setEmployeeCode(UUID.randomUUID().toString());
 		
-		entity = repository.save(entity);
+		employeeEntity = employeeRepository.save(employeeEntity);
 		
-		return mapper.employeeToEmployeeResponse(entity);
+		return employeeMapper.employeeToEmployeeResponse(employeeEntity);
 	}
 	
 	public EmployeeResponse findEmployeeById(Long id) {
-		Optional<Employee> optional = repository.findById(id);
+		Optional<Employee> employeeOptional = employeeRepository.findById(id);
 		
-		Employee entity = optional.orElseThrow(() -> new UserNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, id)));
+		Employee employeeEntity = employeeOptional.orElseThrow(() -> new UserNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, id)));
 		
-		return mapper.employeeToEmployeeResponse(entity);
+		return employeeMapper.employeeToEmployeeResponse(employeeEntity);
 	}
 	
 	public Page<EmployeeResponse> findAllEmployees(Pageable pageable) {
-		return repository.findAll(pageable).map(x -> mapper.employeeToEmployeeResponse(x));
+		return employeeRepository.findAll(pageable).map(x -> employeeMapper.employeeToEmployeeResponse(x));
 	}
 	
-	public EmployeeResponse updateEmployee(Long id, EmployeeRequest request) {
+	public EmployeeResponse updateEmployee(Long id, EmployeeRequest employeeRequest) {
 		
 		try {
-			Employee entity = mapper.employeeRequestToEmployee(request);
+			Employee employeeEntity = employeeMapper.employeeRequestToEmployee(employeeRequest);
 			
-			entity.setId(id);	
+			employeeEntity.setId(id);	
 			
-			entity = repository.save(entity);
+			employeeEntity = employeeRepository.save(employeeEntity);
 			
-			return mapper.employeeToEmployeeResponse(entity);
+			return employeeMapper.employeeToEmployeeResponse(employeeEntity);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}		
@@ -83,7 +83,7 @@ public class EmployeeService implements Serializable {
 	public void deleteEmployee(Long id) {
 		
 		try {
-			repository.deleteById(id);
+			employeeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		} catch (DataIntegrityViolationException e) {
