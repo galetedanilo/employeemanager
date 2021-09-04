@@ -32,9 +32,9 @@ public class EmployeeController {
 	@GetMapping("/all")
 	public ResponseEntity<Page<EmployeeResponse>> findAllEmployees(Pageable pageable) {
 
-		Page<EmployeeResponse> page = employeeService.findAllEmployees(pageable);
+		Page<EmployeeResponse> response = employeeService.findAllEmployees(pageable);
 
-		page.forEach(x -> {
+		response.forEach(x -> {
 
 			x.add(WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder.methodOn(EmployeeController.class).findEmployeeById(x.getEmployeeId()))
@@ -45,7 +45,7 @@ public class EmployeeController {
 					.withRel("Delete Employee"));
 		});
 
-		return new ResponseEntity<>(page, HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@GetMapping("/find/{id}")
