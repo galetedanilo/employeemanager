@@ -80,7 +80,7 @@ public class EmployeeService implements Serializable {
 		try {
 			employeeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException("Id not found " + id);
+			throw new ResourceNotFoundException("Resource found in database with id: " + id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}

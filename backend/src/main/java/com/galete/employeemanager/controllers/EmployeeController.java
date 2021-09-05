@@ -29,7 +29,7 @@ public class EmployeeController {
 
 	private final EmployeeService employeeService;
 
-	@GetMapping("/all")
+	@GetMapping
 	public ResponseEntity<Page<EmployeeResponse>> findAllEmployees(Pageable pageable) {
 
 		Page<EmployeeResponse> response = employeeService.findAllEmployees(pageable);
@@ -48,7 +48,7 @@ public class EmployeeController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@GetMapping("/find/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<EmployeeResponse> findEmployeeById(@PathVariable("id") Long id) {
 
 		EmployeeResponse response = employeeService.findEmployeeById(id);
@@ -64,7 +64,7 @@ public class EmployeeController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PostMapping("/add")
+	@PostMapping
 	public ResponseEntity<EmployeeResponse> addEmployee(@Validated @RequestBody EmployeeRequest request) {
 
 		EmployeeResponse response = employeeService.addEmployee(request);
@@ -76,7 +76,7 @@ public class EmployeeController {
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
-	@PutMapping("/update/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<EmployeeResponse> updateEmployee(@PathVariable("id") Long id,
 			@Validated @RequestBody EmployeeRequest request) {
 
@@ -89,7 +89,7 @@ public class EmployeeController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteEmployee(@PathVariable("id") Long id) {
 
 		employeeService.deleteEmployee(id);
