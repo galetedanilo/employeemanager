@@ -27,7 +27,7 @@ public class EmployeeService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String USER_NOT_FOUND_MESSAGE = "User by id %s was not found";
+	private static final String USER_NOT_FOUND_MESSAGE = "Employee by id %s was not found";
 
 	private final EmployeeRepository employeeRepository;
 
@@ -51,14 +51,15 @@ public class EmployeeService implements Serializable {
 	}
 
 	public EmployeeResponse findEmployeeById(Long id) {
-
 		Employee employeeEntity = verifyIfEmployeeExists(id);
 
 		return employeeMapper.employeeToEmployeeResponse(employeeEntity);
 	}
 
 	public Page<EmployeeResponse> findAllEmployees(Pageable pageable) {
-		return employeeRepository.findAll(pageable).map(x -> employeeMapper.employeeToEmployeeResponse(x));
+		Page<Employee> employeePage = employeeRepository.findAll(pageable);
+				
+		return employeePage.map(obj -> employeeMapper.employeeToEmployeeResponse(obj));
 	}
 
 	public EmployeeResponse updateEmployee(Long id, EmployeeRequest employeeRequest) {
@@ -76,7 +77,6 @@ public class EmployeeService implements Serializable {
 	}
 
 	public void deleteEmployee(Long id) {
-
 		try {
 			employeeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
