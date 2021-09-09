@@ -1,12 +1,18 @@
 package com.galete.employeemanager.entities;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -19,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_employee")
+@Table(name = "tb_employees")
 public class Employee implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -29,16 +35,32 @@ public class Employee implements Serializable {
 	@Column(nullable = false, updatable = false)
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
-	private String name;
+	@Column(nullable = false)
+	private String firstName;
 	
 	@Column(nullable = false)
+	private String lastName;
+	
+	@Column(nullable = false, unique = true)
 	private String email;
 	
 	@Column(nullable = false)
+	private String cpf;
+	
+	@Column(nullable = false)
+	private LocalDate birthDate;
+		
+	@Column(nullable = false)
 	private String jobTitle;
 	
-	private String phone;
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant created;
+	
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant updated;
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	private List<Phone> phones;
 	
 	private String imageUrl;
 	

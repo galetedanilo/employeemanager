@@ -1,6 +1,7 @@
 package com.galete.employeemanager.services;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.UUID;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -8,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.galete.employeemanager.entities.Employee;
 import com.galete.employeemanager.mappers.EmployeeMapper;
@@ -15,8 +17,8 @@ import com.galete.employeemanager.repositories.EmployeeRepository;
 import com.galete.employeemanager.request.EmployeeRequest;
 import com.galete.employeemanager.response.EmployeeResponse;
 import com.galete.employeemanager.services.exceptions.DatabaseException;
-import com.galete.employeemanager.services.exceptions.ResourceNotFoundException;
 import com.galete.employeemanager.services.exceptions.EmployeeNotFoundException;
+import com.galete.employeemanager.services.exceptions.ResourceNotFoundException;
 import com.galete.employeemanager.services.exceptions.UsernameExistsException;
 
 import lombok.AllArgsConstructor;
@@ -33,9 +35,10 @@ public class EmployeeService implements Serializable {
 
 	private final EmployeeMapper employeeMapper = EmployeeMapper.INSTANCE;
 
+	@Transactional
 	public EmployeeResponse addEmployee(EmployeeRequest employeeRequest) {
 
-		Boolean userExists = employeeRepository.findByName(employeeRequest.getName()).isPresent();
+		Boolean userExists = employeeRepository.findByEmail(employeeRequest.getEmail()).isPresent();
 
 		if (userExists) {
 			throw new UsernameExistsException("User with " + employeeRequest.getEmail() + " is already exist");
@@ -44,12 +47,15 @@ public class EmployeeService implements Serializable {
 		Employee employeeEntity = employeeMapper.employeeRequestToEmployee(employeeRequest);
 
 		employeeEntity.setEmployeeCode(UUID.randomUUID().toString());
+		employeeEntity.setCreated(Instant.now());
+		employeeEntity.setUpdated(Instant.now());
 
 		employeeEntity = employeeRepository.save(employeeEntity);
 
 		return employeeMapper.employeeToEmployeeResponse(employeeEntity);
 	}
 
+	@Transactional(readOnly = true)
 	public EmployeeResponse findEmployeeById(Long id) {
 		Employee employeeEntity = verifyIfEmployeeExists(id);
 
@@ -62,6 +68,7 @@ public class EmployeeService implements Serializable {
 		return employeePage.map(obj -> employeeMapper.employeeToEmployeeResponse(obj));
 	}
 
+	@Transactional
 	public EmployeeResponse updateEmployee(Long id, EmployeeRequest employeeRequest) {
 
 		verifyIfEmployeeExists(id);
@@ -69,6 +76,7 @@ public class EmployeeService implements Serializable {
 		Employee employeeEntity = employeeMapper.employeeRequestToEmployee(employeeRequest);
 
 		employeeEntity.setId(id);
+		employeeEntity.setUpdated(Instant.now());
 
 		employeeEntity = employeeRepository.save(employeeEntity);
 

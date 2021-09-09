@@ -1,10 +1,14 @@
 package com.galete.employeemanager.request;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,19 +23,29 @@ public class EmployeeRequest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotBlank(message = "name is required")
-	private String name;
+	@NotBlank(message = "first name is required")
+	private String firstName;
 	
-	@Email(message = "email not valid")
+	@NotBlank(message = "last name is required")
+	private String lastName;
+	
+	@Email(message = "email is not valid")
 	@NotBlank(message = "email is required")
 	private String email;
+	
+	@NotBlank(message = "cpf is required")
+	@CPF(message = "cpf is not valid")
+	private String cpf;
+	
+	@NotBlank(message = "birth date is required")
+	private String birthDate;
 	
 	@NotBlank(message = "job title is required")
 	private String jobTitle;
 	
-	@NotBlank(message = "phone is required")
-	@Size(min = 10, max = 15, message = "phone size should be between 10 and 15 ")
-	private String phone;
+	@Valid
+	@NotEmpty
+	private List<PhoneRequest> phones;
 	
 	private String imageUrl;
 }

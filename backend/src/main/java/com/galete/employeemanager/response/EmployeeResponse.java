@@ -1,6 +1,7 @@
 package com.galete.employeemanager.response;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -20,10 +21,13 @@ public class EmployeeResponse extends RepresentationModel<EmployeeResponse> impl
 	private static final long serialVersionUID = 1L;
 
 	private Long employeeId;
-	private String name;
+	private String firstName;
+	private String lastName;
+	private String cpf;
+	private String birthDate;
 	private String email;
 	private String jobTitle;
-	private String phone;
+	private List<PhoneResponse> phones;
 	private String imageUrl;
 	private String employeeCode;
 

@@ -13,8 +13,11 @@ public interface EmployeeMapper {
 
 	EmployeeMapper INSTANCE = Mappers.getMapper(EmployeeMapper.class);
 
+	@Mapping(target = "birthDate", source = "birthDate", dateFormat = "dd-MM-yyyy")
 	@Mapping(target = "employeeCode", ignore = true)
 	@Mapping(target = "id", ignore = true)
+	@Mapping(target = "created", ignore = true)
+	@Mapping(target = "updated", ignore = true)
 	Employee employeeRequestToEmployee(EmployeeRequest request);
 	
 	@Mapping(source = "id", target = "employeeId")
