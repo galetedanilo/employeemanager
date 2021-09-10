@@ -1,14 +1,20 @@
 package com.galete.employeemanager.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.galete.employeemanager.entities.Employee;
@@ -26,7 +32,9 @@ public class EmployeeServiceTest {
 	@InjectMocks
 	private EmployeeService employeeService;
 	
-	private Optional<Employee> employee;
+	private Employee employee;
+	
+	private PageImpl<Employee> employeePage;
 	
 	private Long existingId;
 	private Long nonExistingId;
@@ -36,10 +44,24 @@ public class EmployeeServiceTest {
 		existingId = 1L;
 		nonExistingId = 2L;
 		
-		employee = Optional.of(EmployeeFactory.createEmployee());
+		employee = EmployeeFactory.createEmployee();
 		
-		Mockito.when(employeeRepository.findById(existingId)).thenReturn(employee);
+		employeePage = new PageImpl<Employee>(List.of(employee));
+		
+		Mockito.when(employeeRepository.findAll((Pageable)ArgumentMatchers.any())).thenReturn(employeePage);
+		
+		Mockito.when(employeeRepository.findById(existingId)).thenReturn(Optional.of(employee));
 		Mockito.when(employeeRepository.findById(nonExistingId)).thenReturn(Optional.empty());
+	}
+	
+	@Test
+	public void findAllEmployeesShouldReturnPageOfEmployeeResponse() {
+		
+		Pageable pageable = PageRequest.of(0, 20);
+		
+		Page<EmployeeResponse> employeePage = employeeService.findAllEmployees(pageable);
+		
+		Assertions.assertNotNull(employeePage);
 	}
 	
 	@Test
