@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import com.galete.employeemanager.entities.Employee;
+import com.galete.employeemanager.request.EmployeeRequest;
 
 public class EmployeeFactory {
 	
@@ -35,6 +36,20 @@ public class EmployeeFactory {
 				.imageUrl(IMAGE_URL)
 				.phones(Collections.singletonList(PhoneFactory.createPhone()))
 				.employeeCode(EMPLOYEE_CODE)
+				.build();
+	}
+	
+	public static EmployeeRequest createEmployeeRequest() {
+		
+		return EmployeeRequest.builder()
+				.firstName(FIRST_NAME)
+				.lastName(LAST_NAME)
+				.email(EMAIL)
+				.cpf(CPF)
+				.birthDate("10-12-2010")
+				.jobTitle(JOB_TITLE)
+				.imageUrl(IMAGE_URL)
+				.phones(Collections.singletonList(PhoneFactory.createPhoneRequest()))
 				.build();
 	}
 }

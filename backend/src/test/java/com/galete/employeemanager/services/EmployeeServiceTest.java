@@ -20,6 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.galete.employeemanager.entities.Employee;
 import com.galete.employeemanager.factories.EmployeeFactory;
 import com.galete.employeemanager.repositories.EmployeeRepository;
+import com.galete.employeemanager.request.EmployeeRequest;
 import com.galete.employeemanager.response.EmployeeResponse;
 import com.galete.employeemanager.services.exceptions.EmployeeNotFoundException;
 
@@ -34,8 +35,10 @@ public class EmployeeServiceTest {
 	
 	private Employee employee;
 	
-	private PageImpl<Employee> employeePage;
+	private EmployeeRequest employeeRequest;
 	
+	private PageImpl<Employee> employeePage;
+		
 	private Long existingId;
 	private Long nonExistingId;
 	
@@ -45,6 +48,7 @@ public class EmployeeServiceTest {
 		nonExistingId = 2L;
 		
 		employee = EmployeeFactory.createEmployee();
+		employeeRequest = EmployeeFactory.createEmployeeRequest();
 		
 		employeePage = new PageImpl<Employee>(List.of(employee));
 		
@@ -52,6 +56,10 @@ public class EmployeeServiceTest {
 		
 		Mockito.when(employeeRepository.findById(existingId)).thenReturn(Optional.of(employee));
 		Mockito.when(employeeRepository.findById(nonExistingId)).thenReturn(Optional.empty());
+		
+		Mockito.when(employeeRepository.save(ArgumentMatchers.any())).thenReturn(employee);
+		
+		Mockito.when(employeeRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(Optional.empty());
 	}
 	
 	@Test
@@ -82,5 +90,13 @@ public class EmployeeServiceTest {
 		});
 		
 		Mockito.verify(employeeRepository, Mockito.times(1)).findById(nonExistingId);
+	}
+	
+	@Test
+	public void addEmployeeShouldReturnEmployeeResponse() {
+		EmployeeResponse employeeResponse = employeeService.addEmployee(employeeRequest);
+		
+		Assertions.assertNotNull(employeeResponse);
+		
 	}
 }

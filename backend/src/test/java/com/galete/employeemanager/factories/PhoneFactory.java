@@ -2,6 +2,7 @@ package com.galete.employeemanager.factories;
 
 import com.galete.employeemanager.entities.Phone;
 import com.galete.employeemanager.entities.enums.PhoneType;
+import com.galete.employeemanager.request.PhoneRequest;
 
 public class PhoneFactory {
 
@@ -13,6 +14,14 @@ public class PhoneFactory {
 		
 		return Phone.builder()
 				.id(ID)
+				.type(PHONE_TYPE)
+				.number(NUMBER)
+				.build();
+	}
+	
+	public static PhoneRequest createPhoneRequest() {
+		
+		return PhoneRequest.builder()
 				.type(PHONE_TYPE)
 				.number(NUMBER)
 				.build();
