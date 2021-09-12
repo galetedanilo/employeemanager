@@ -1,5 +1,7 @@
 package com.galete.employeemanager.entities;
 
+import java.time.Instant;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,4 +31,10 @@ public class Department {
 	
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String description;
+	
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant created;
+	
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant updated;
 }
