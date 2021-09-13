@@ -1,10 +1,10 @@
 package com.galete.employeemanager.services.exceptions;
 
-public class UsernameExistsException extends RuntimeException {
+public class UniqueDatabaseException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public UsernameExistsException(String msg) {
+	public UniqueDatabaseException(String msg) {
 		super(msg);
 	}
 

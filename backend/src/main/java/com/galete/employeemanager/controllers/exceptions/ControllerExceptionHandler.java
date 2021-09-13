@@ -12,28 +12,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.galete.employeemanager.services.exceptions.DatabaseException;
-import com.galete.employeemanager.services.exceptions.EmployeeNotFoundException;
 import com.galete.employeemanager.services.exceptions.ResourceNotFoundException;
-import com.galete.employeemanager.services.exceptions.UsernameExistsException;
+import com.galete.employeemanager.services.exceptions.UniqueDatabaseException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
-
-	@ExceptionHandler(EmployeeNotFoundException.class)
-	public ResponseEntity<ErrorMessage> employeeNotFoundException(EmployeeNotFoundException ex, HttpServletRequest request) {
-		ErrorMessage error = new ErrorMessage();
-		
-		error.setTimestamp(Instant.now());
-		error.setStatus(HttpStatus.NOT_FOUND.value());
-		error.setError("Resource not found");
-		error.setPath(request.getRequestURI());
-		error.setMessage(ex.getMessage());
-		
-		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-	}
 	
-	@ExceptionHandler(UsernameExistsException.class)
-	public ResponseEntity<ErrorMessage> usernameExistsException(UsernameExistsException ex, HttpServletRequest request) {
+	@ExceptionHandler(UniqueDatabaseException.class)
+	public ResponseEntity<ErrorMessage> usernameExistsException(UniqueDatabaseException ex, HttpServletRequest request) {
 		ErrorMessage error = new ErrorMessage();
 		
 		error.setTimestamp(Instant.now());

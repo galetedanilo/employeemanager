@@ -17,9 +17,8 @@ import com.galete.employeemanager.repositories.EmployeeRepository;
 import com.galete.employeemanager.request.EmployeeRequest;
 import com.galete.employeemanager.response.EmployeeResponse;
 import com.galete.employeemanager.services.exceptions.DatabaseException;
-import com.galete.employeemanager.services.exceptions.EmployeeNotFoundException;
 import com.galete.employeemanager.services.exceptions.ResourceNotFoundException;
-import com.galete.employeemanager.services.exceptions.UsernameExistsException;
+import com.galete.employeemanager.services.exceptions.UniqueDatabaseException;
 
 import lombok.AllArgsConstructor;
 
@@ -28,8 +27,6 @@ import lombok.AllArgsConstructor;
 public class EmployeeService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final String EMPLOYEE_NOT_FOUND_MESSAGE = "Employee by id %s was not found";
 
 	private final EmployeeRepository employeeRepository;
 
@@ -41,7 +38,7 @@ public class EmployeeService implements Serializable {
 		Boolean userExists = employeeRepository.findByEmail(employeeRequest.getEmail()).isPresent();
 
 		if (userExists) {
-			throw new UsernameExistsException("User with " + employeeRequest.getEmail() + " is already exist");
+			throw new UniqueDatabaseException("User with " + employeeRequest.getEmail() + " is already exist");
 		}
 
 		Employee employeeEntity = employeeMapper.employeeRequestToEmployee(employeeRequest);
@@ -62,6 +59,7 @@ public class EmployeeService implements Serializable {
 		return employeeMapper.employeeToEmployeeResponse(employeeEntity);
 	}
 
+	@Transactional(readOnly = true)
 	public Page<EmployeeResponse> findAllEmployees(Pageable pageable) {
 		Page<Employee> employeePage = employeeRepository.findAll(pageable);
 				
@@ -96,7 +94,7 @@ public class EmployeeService implements Serializable {
 
 	private Employee verifyIfEmployeeExists(Long id) {
 		return employeeRepository.findById(id)
-				.orElseThrow(() -> new EmployeeNotFoundException(String.format(EMPLOYEE_NOT_FOUND_MESSAGE, id)));
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("Employee by id %s was not found", id)));
 	}
 
 }

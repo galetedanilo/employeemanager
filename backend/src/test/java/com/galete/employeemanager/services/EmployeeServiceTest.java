@@ -22,7 +22,7 @@ import com.galete.employeemanager.factories.EmployeeFactory;
 import com.galete.employeemanager.repositories.EmployeeRepository;
 import com.galete.employeemanager.request.EmployeeRequest;
 import com.galete.employeemanager.response.EmployeeResponse;
-import com.galete.employeemanager.services.exceptions.EmployeeNotFoundException;
+import com.galete.employeemanager.services.exceptions.ResourceNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 public class EmployeeServiceTest {
@@ -85,7 +85,7 @@ public class EmployeeServiceTest {
 	@Test
 	public void findEmployeeByIdShouldReturnEmployeeNotFoundExceptionWhenIdDoesNotExisting() {
 		
-		Assertions.assertThrows(EmployeeNotFoundException.class, () -> {
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
 			employeeService.findEmployeeById(nonExistingId);
 		});
 		
