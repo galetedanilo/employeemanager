@@ -12,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -63,6 +65,10 @@ public class Employee implements Serializable {
 	private List<Phone> phones;
 	
 	private String imageUrl;
+	
+	@ManyToOne
+	@JoinColumn(name = "department_id")
+	private Department department;
 	
 	@Column(nullable = false, updatable = false)
 	private String employeeCode;
