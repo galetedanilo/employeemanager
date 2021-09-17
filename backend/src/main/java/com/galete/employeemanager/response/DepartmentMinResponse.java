@@ -1,8 +1,6 @@
-package com.galete.employeemanager.request;
+package com.galete.employeemanager.response;
 
 import java.io.Serializable;
-
-import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,12 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepartmentRequest implements Serializable {
+public class DepartmentMinResponse  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotBlank(message = "department name is required")
 	private String name;
-	
-	private String description;
+
 }

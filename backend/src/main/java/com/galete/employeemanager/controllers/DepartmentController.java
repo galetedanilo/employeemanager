@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +32,17 @@ public class DepartmentController {
 	@GetMapping
 	public ResponseEntity<Page<DepartmentResponse>> findAllDepartments(Pageable pageable) {
 		Page<DepartmentResponse> response = departmentService.findAllDepartments(pageable);
+		
+		response.forEach(x -> {
+
+			x.add(WebMvcLinkBuilder
+					.linkTo(WebMvcLinkBuilder.methodOn(DepartmentController.class).findDepartmentById(x.getDepartmentId()))
+					.withSelfRel());
+			
+			x.add(WebMvcLinkBuilder
+					.linkTo(WebMvcLinkBuilder.methodOn(DepartmentController.class).deleteDepartment(x.getDepartmentId()))
+					.withRel("Delete Department"));
+		});
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

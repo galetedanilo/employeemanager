@@ -1,6 +1,7 @@
 package com.galete.employeemanager.response;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -24,4 +25,9 @@ public class DepartmentResponse extends RepresentationModel<DepartmentResponse> 
 	private String name;
 	
 	private String description;
+	
+	private Instant created;
+
+	private Instant updated;
+	
 }

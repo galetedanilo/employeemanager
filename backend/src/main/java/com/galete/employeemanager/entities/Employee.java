@@ -5,10 +5,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -61,16 +59,16 @@ public class Employee implements Serializable {
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant updated;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-	private List<Phone> phones;
-	
 	private String imageUrl;
+	
+	@Column(nullable = false, updatable = false)
+	private String employeeCode;
+	
+	@OneToMany
+	private List<Phone> phones;
 	
 	@ManyToOne
 	@JoinColumn(name = "department_id")
 	private Department department;
-	
-	@Column(nullable = false, updatable = false)
-	private String employeeCode;
-		
+			
 }

@@ -8,7 +8,7 @@ import com.galete.employeemanager.entities.Employee;
 import com.galete.employeemanager.request.EmployeeRequest;
 import com.galete.employeemanager.response.EmployeeResponse;
 
-@Mapper
+@Mapper(uses = DepartmentMinMapper.class)
 public interface EmployeeMapper {
 
 	EmployeeMapper INSTANCE = Mappers.getMapper(EmployeeMapper.class);

@@ -43,9 +43,12 @@ public class EmployeeRequest implements Serializable {
 	@NotBlank(message = "job title is required")
 	private String jobTitle;
 	
+	private String imageUrl;
+	
 	@Valid
 	@NotEmpty
 	private List<PhoneRequest> phones;
 	
-	private String imageUrl;
+	@Valid
+	private DepartmentRequest department;
 }

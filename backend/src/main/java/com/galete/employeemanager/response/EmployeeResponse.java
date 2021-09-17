@@ -27,8 +27,9 @@ public class EmployeeResponse extends RepresentationModel<EmployeeResponse> impl
 	private String birthDate;
 	private String email;
 	private String jobTitle;
-	private List<PhoneResponse> phones;
 	private String imageUrl;
 	private String employeeCode;
+	private List<PhoneResponse> phones;
+	private DepartmentMinResponse department;
 
 }
