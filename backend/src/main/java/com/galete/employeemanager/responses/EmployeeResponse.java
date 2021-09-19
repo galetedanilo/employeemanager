@@ -1,9 +1,12 @@
-package com.galete.employeemanager.response;
+package com.galete.employeemanager.responses;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.hateoas.RepresentationModel;
+
+import com.galete.employeemanager.responses.cards.DepartmentCardResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,8 +31,9 @@ public class EmployeeResponse extends RepresentationModel<EmployeeResponse> impl
 	private String email;
 	private String jobTitle;
 	private String imageUrl;
+	private Instant created;
+	private Instant updated;
 	private String employeeCode;
 	private List<PhoneResponse> phones;
-	private DepartmentMinResponse department;
-
+	private DepartmentCardResponse department;
 }

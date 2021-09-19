@@ -5,8 +5,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.galete.employeemanager.entities.Department;
-import com.galete.employeemanager.request.DepartmentRequest;
-import com.galete.employeemanager.response.DepartmentResponse;
+import com.galete.employeemanager.requests.DepartmentRequest;
+import com.galete.employeemanager.responses.DepartmentResponse;
 
 @Mapper
 public interface DepartmentMapper {

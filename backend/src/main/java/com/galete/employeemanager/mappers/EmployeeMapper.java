@@ -5,10 +5,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.galete.employeemanager.entities.Employee;
-import com.galete.employeemanager.request.EmployeeRequest;
-import com.galete.employeemanager.response.EmployeeResponse;
+import com.galete.employeemanager.requests.EmployeeRequest;
+import com.galete.employeemanager.responses.EmployeeResponse;
 
-@Mapper(uses = DepartmentMinMapper.class)
+@Mapper(uses = {PhoneMapper.class, DepartmentCardMapper.class})
 public interface EmployeeMapper {
 
 	EmployeeMapper INSTANCE = Mappers.getMapper(EmployeeMapper.class);

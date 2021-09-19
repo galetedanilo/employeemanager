@@ -22,5 +22,3 @@ INSERT INTO tb_employees_phones(employee_id, phones_id) VALUES (2, 4);
 INSERT INTO tb_employees_phones(employee_id, phones_id) VALUES (3, 5);
 INSERT INTO tb_employees_phones(employee_id, phones_id) VALUES (3, 6);
 INSERT INTO tb_employees_phones(employee_id, phones_id) VALUES (4, 7);
-
-

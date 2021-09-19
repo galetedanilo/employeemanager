@@ -1,4 +1,4 @@
-package com.galete.employeemanager.request;
+package com.galete.employeemanager.requests;
 
 import java.io.Serializable;
 import java.util.List;
@@ -47,8 +47,5 @@ public class EmployeeRequest implements Serializable {
 	
 	@Valid
 	@NotEmpty
-	private List<PhoneRequest> phones;
-	
-	@Valid
-	private DepartmentRequest department;
+	private List<PhoneRequest> phones;	
 }

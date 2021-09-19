@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -52,18 +53,18 @@ public class Employee implements Serializable {
 	@Column(nullable = false)
 	private String jobTitle;
 	
+	private String imageUrl;
+	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant created;
 	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant updated;
 	
-	private String imageUrl;
-	
 	@Column(nullable = false, updatable = false)
 	private String employeeCode;
 	
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY)
 	private List<Phone> phones;
 	
 	@ManyToOne

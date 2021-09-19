@@ -1,6 +1,4 @@
-package com.galete.employeemanager.response;
-
-import java.io.Serializable;
+package com.galete.employeemanager.responses.cards;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepartmentMinResponse  implements Serializable {
+public class DepartmentCardResponse {
 
-	private static final long serialVersionUID = 1L;
-	
+	private Long departmentId;
 	private String name;
-
 }

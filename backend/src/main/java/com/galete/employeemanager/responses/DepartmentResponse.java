@@ -1,4 +1,4 @@
-package com.galete.employeemanager.response;
+package com.galete.employeemanager.responses;
 
 import java.io.Serializable;
 import java.time.Instant;

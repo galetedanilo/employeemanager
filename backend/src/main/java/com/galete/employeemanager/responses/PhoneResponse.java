@@ -1,4 +1,4 @@
-package com.galete.employeemanager.response;
+package com.galete.employeemanager.responses;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

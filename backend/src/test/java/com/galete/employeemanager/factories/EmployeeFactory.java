@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import com.galete.employeemanager.entities.Employee;
-import com.galete.employeemanager.request.EmployeeRequest;
+import com.galete.employeemanager.requests.EmployeeRequest;
 
 public class EmployeeFactory {
 	

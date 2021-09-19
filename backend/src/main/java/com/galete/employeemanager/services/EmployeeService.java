@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.galete.employeemanager.entities.Employee;
 import com.galete.employeemanager.mappers.EmployeeMapper;
 import com.galete.employeemanager.repositories.EmployeeRepository;
-import com.galete.employeemanager.request.EmployeeRequest;
-import com.galete.employeemanager.response.EmployeeResponse;
+import com.galete.employeemanager.requests.EmployeeRequest;
+import com.galete.employeemanager.responses.EmployeeResponse;
 import com.galete.employeemanager.services.exceptions.DatabaseException;
 import com.galete.employeemanager.services.exceptions.ResourceNotFoundException;
 import com.galete.employeemanager.services.exceptions.UniqueDatabaseException;
@@ -29,7 +29,7 @@ public class EmployeeService implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final EmployeeRepository employeeRepository;
-
+	
 	private final EmployeeMapper employeeMapper = EmployeeMapper.INSTANCE;
 
 	@Transactional
@@ -93,7 +93,7 @@ public class EmployeeService implements Serializable {
 	}
 
 	private Employee verifyIfEmployeeExists(Long id) {
-		return employeeRepository.findById(id)
+		return employeeRepository.findEmployeeById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(String.format("Employee by id %s was not found", id)));
 	}
 
