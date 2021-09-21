@@ -1,5 +1,7 @@
 package com.galete.employeemanager.responses;
 
+import java.io.Serializable;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
@@ -14,7 +16,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhoneResponse {
+public class PhoneResponse implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 	

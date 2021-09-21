@@ -1,5 +1,7 @@
 package com.galete.employeemanager.requests;
 
+import java.io.Serializable;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
@@ -16,14 +18,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhoneRequest {
+public class PhoneRequest implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
 	private PhoneType type;
 	
-	@NotBlank(message = "number is required")
+	@NotBlank(message = "phone number is required")
 	@Size(min = 10, max = 15, message = "number size should be between 10 and 15 ")
 	private String number;
 }
