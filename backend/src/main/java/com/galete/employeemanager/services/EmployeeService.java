@@ -61,7 +61,7 @@ public class EmployeeService implements Serializable {
 
 	@Transactional(readOnly = true)
 	public Page<EmployeeResponse> findAllEmployees(Pageable pageable) {
-		Page<Employee> employeePage = employeeRepository.findAll(pageable);
+		Page<Employee> employeePage = employeeRepository.findAllEmployees(pageable);
 				
 		return employeePage.map(obj -> employeeMapper.employeeToEmployeeResponse(obj));
 	}
