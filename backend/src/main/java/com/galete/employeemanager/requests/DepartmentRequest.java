@@ -21,4 +21,7 @@ public class DepartmentRequest implements Serializable {
 	private String name;
 	
 	private String description;
+	
+	@NotBlank(message = "department image is required")
+	private String imageUrl;
 }

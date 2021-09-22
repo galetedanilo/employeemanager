@@ -37,5 +37,7 @@ public class Department {
 	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant updated;
+	
+	private String imageUrl;
 
 }

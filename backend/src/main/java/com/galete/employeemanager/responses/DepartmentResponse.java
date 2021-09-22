@@ -30,4 +30,6 @@ public class DepartmentResponse extends RepresentationModel<DepartmentResponse> 
 
 	private Instant updated;
 	
+	private String imageUrl;
+	
 }
