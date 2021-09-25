@@ -2,6 +2,7 @@ package com.galete.employeemanager.services;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -11,10 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.galete.employeemanager.entities.Department;
+import com.galete.employeemanager.entities.projections.DepartmentProjection;
 import com.galete.employeemanager.mappers.DepartmentMapper;
 import com.galete.employeemanager.repositories.DepartmentRepository;
 import com.galete.employeemanager.requests.DepartmentRequest;
 import com.galete.employeemanager.responses.DepartmentResponse;
+import com.galete.employeemanager.responses.mins.DepartmentMinResponse;
 import com.galete.employeemanager.services.exceptions.DatabaseException;
 import com.galete.employeemanager.services.exceptions.ResourceNotFoundException;
 import com.galete.employeemanager.services.exceptions.UniqueDatabaseException;
@@ -61,6 +64,11 @@ public class DepartmentService implements Serializable {
 		Page<Department> departmentPage = departmentRepository.findAll(pageable);
 		
 		return departmentPage.map(obj -> departmentMapper.departmentToDepartmentResponse(obj));
+	}
+	
+	@Transactional(readOnly = true)
+	public List<DepartmentMinResponse> listAllDepartments() {
+		List<DepartmentProjection> departmentProjection = departmentRepository.listAllDepartments();
 	}
 	
 	@Transactional

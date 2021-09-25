@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.galete.employeemanager.responses.cards.DepartmentCardResponse;
+import com.galete.employeemanager.responses.mins.DepartmentMinResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,5 +35,5 @@ public class EmployeeResponse extends RepresentationModel<EmployeeResponse> impl
 	private Instant updated;
 	private String employeeCode;
 	private List<PhoneResponse> phones;
-	private DepartmentCardResponse department;
+	private DepartmentMinResponse department;
 }

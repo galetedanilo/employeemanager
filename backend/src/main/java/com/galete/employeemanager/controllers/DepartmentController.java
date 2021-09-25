@@ -1,8 +1,11 @@
 package com.galete.employeemanager.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.galete.employeemanager.requests.DepartmentRequest;
 import com.galete.employeemanager.responses.DepartmentResponse;
+import com.galete.employeemanager.responses.mins.DepartmentMinResponse;
 import com.galete.employeemanager.services.DepartmentService;
 
 import lombok.AllArgsConstructor;
@@ -51,6 +55,21 @@ public class DepartmentController {
 	public ResponseEntity<DepartmentResponse> findDepartmentById(@PathVariable Long id) {
 		DepartmentResponse response = departmentService.findDepartmentById(id);
 		
+		response.add(WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(DepartmentController.class).findAllDepartments(PageRequest.of(0, 20)))
+				.withRel("Find All Departments"));
+		
+		response.add(WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(DepartmentController.class).deleteDepartment(id))
+				.withRel("Delete Department"));
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@GetMapping("/list")
+	public ResponseEntity<List<DepartmentMinResponse>> listAllDepartments() {
+		List<DepartmentMinResponse> response = departmentService.listAllDepartments();
+		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
@@ -58,12 +77,20 @@ public class DepartmentController {
 	public ResponseEntity<DepartmentResponse> addDepartment(@Valid @RequestBody DepartmentRequest request) {
 		DepartmentResponse response = departmentService.addDepartment(request);
 		
+		response.add(WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(DepartmentController.class).findAllDepartments(PageRequest.of(0, 20)))
+				.withRel("Find All Departments"));
+		
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<DepartmentResponse> updateDepartment(@PathVariable Long id, @Valid @RequestBody DepartmentRequest request) {
 		DepartmentResponse response = departmentService.updateDepartment(id, request);
+		
+		response.add(WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(DepartmentController.class).findAllDepartments(PageRequest.of(0, 20)))
+				.withRel("Find All Departments"));
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

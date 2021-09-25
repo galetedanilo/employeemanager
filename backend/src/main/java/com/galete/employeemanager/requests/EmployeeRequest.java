@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.br.CPF;
 
-import com.galete.employeemanager.requests.cards.DepartmentCardRequest;
+import com.galete.employeemanager.requests.mins.DepartmentMinRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,5 +52,5 @@ public class EmployeeRequest implements Serializable {
 	private List<PhoneRequest> phones;	
 	
 	@Valid
-	private DepartmentCardRequest department;
+	private DepartmentMinRequest department;
 }

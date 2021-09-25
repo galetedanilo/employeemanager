@@ -13,4 +13,5 @@ public class DepartmentCardResponse {
 
 	private Long departmentId;
 	private String name;
+	private String imageUrl;
 }

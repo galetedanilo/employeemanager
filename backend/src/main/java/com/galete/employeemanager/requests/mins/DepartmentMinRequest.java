@@ -1,4 +1,4 @@
-package com.galete.employeemanager.requests.cards;
+package com.galete.employeemanager.requests.mins;
 
 import java.io.Serializable;
 
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepartmentCardRequest implements Serializable {
+public class DepartmentMinRequest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
