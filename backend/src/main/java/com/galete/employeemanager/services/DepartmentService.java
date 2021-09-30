@@ -3,6 +3,7 @@ package com.galete.employeemanager.services;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.galete.employeemanager.entities.Department;
 import com.galete.employeemanager.entities.projections.DepartmentProjection;
 import com.galete.employeemanager.mappers.DepartmentMapper;
+import com.galete.employeemanager.mappers.DepartmentMinMapper;
 import com.galete.employeemanager.repositories.DepartmentRepository;
 import com.galete.employeemanager.requests.DepartmentRequest;
 import com.galete.employeemanager.responses.DepartmentResponse;
@@ -33,6 +35,8 @@ public class DepartmentService implements Serializable {
 	private final DepartmentRepository departmentRepository;
 	
 	private final DepartmentMapper departmentMapper = DepartmentMapper.INSTANCE;
+	
+	private final DepartmentMinMapper departmentMinMapper = DepartmentMinMapper.INSTANCE;
 	
 	public DepartmentResponse addDepartment(DepartmentRequest departmentRequest) {
 		
@@ -68,7 +72,11 @@ public class DepartmentService implements Serializable {
 	
 	@Transactional(readOnly = true)
 	public List<DepartmentMinResponse> listAllDepartments() {
-		List<DepartmentProjection> departmentProjection = departmentRepository.listAllDepartments();
+		List<DepartmentProjection> departmentProjection = departmentRepository.listAllDepartments();		
+		
+		return departmentProjection.stream()
+				.map(obj -> departmentMinMapper.departmentProjectionToDepartmentMinResponse(obj))
+				.collect(Collectors.toList());
 	}
 	
 	@Transactional

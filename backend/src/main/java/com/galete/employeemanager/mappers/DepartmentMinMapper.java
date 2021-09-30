@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.galete.employeemanager.entities.Department;
+import com.galete.employeemanager.entities.projections.DepartmentProjection;
 import com.galete.employeemanager.requests.mins.DepartmentMinRequest;
 import com.galete.employeemanager.responses.mins.DepartmentMinResponse;
 
@@ -21,5 +22,7 @@ public interface DepartmentMinMapper {
 	Department departmentMinRequestToDepartment(DepartmentMinRequest request);
 	
 	DepartmentMinResponse departmentToDepartmentMinResponse(Department entity);
+	
+	DepartmentMinResponse departmentProjectionToDepartmentMinResponse(DepartmentProjection projection);
 
 }
