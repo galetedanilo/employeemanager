@@ -2,7 +2,7 @@ package com.galete.employeemanager.requests.mins;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +17,6 @@ public class DepartmentMinRequest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotEmpty(message = "deparment is required")
+	@NotNull(message = "deparment is required")
 	private Long id;
 }

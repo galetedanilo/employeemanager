@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.galete.employeemanager.entities.Employee;
 import com.galete.employeemanager.mappers.EmployeeMapper;
 import com.galete.employeemanager.repositories.EmployeeRepository;
+import com.galete.employeemanager.repositories.PhoneRepository;
 import com.galete.employeemanager.requests.EmployeeRequest;
 import com.galete.employeemanager.responses.EmployeeResponse;
 import com.galete.employeemanager.services.exceptions.DatabaseException;
@@ -29,6 +30,7 @@ public class EmployeeService implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final EmployeeRepository employeeRepository;
+	private final PhoneRepository phoneRepository;
 	
 	private final EmployeeMapper employeeMapper = EmployeeMapper.INSTANCE;
 
@@ -36,7 +38,7 @@ public class EmployeeService implements Serializable {
 	public EmployeeResponse addEmployee(EmployeeRequest employeeRequest) {
 
 		Boolean userExists = employeeRepository.findByEmail(employeeRequest.getEmail()).isPresent();
-
+		
 		if (userExists) {
 			throw new UniqueDatabaseException("User with " + employeeRequest.getEmail() + " is already exist");
 		}
@@ -46,7 +48,7 @@ public class EmployeeService implements Serializable {
 		employeeEntity.setEmployeeCode(UUID.randomUUID().toString());
 		employeeEntity.setCreated(Instant.now());
 		employeeEntity.setUpdated(Instant.now());
-
+		
 		employeeEntity = employeeRepository.save(employeeEntity);
 
 		return employeeMapper.employeeToEmployeeResponse(employeeEntity);
@@ -83,7 +85,9 @@ public class EmployeeService implements Serializable {
 	}
 
 	public void deleteEmployee(Long id) {
-		try {
+		try {	
+			phoneRepository.deleteAllPhonesByEmployee(id);
+			
 			employeeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Resource found in database with id: " + id);

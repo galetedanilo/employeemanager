@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -52,5 +53,6 @@ public class EmployeeRequest implements Serializable {
 	private List<PhoneRequest> phones;	
 	
 	@Valid
+	@NotNull(message = "department is required")
 	private DepartmentMinRequest department;
 }

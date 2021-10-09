@@ -25,9 +25,9 @@ public class PhoneRequest implements Serializable{
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	private PhoneType type;
+	private PhoneType phoneType;
 	
 	@NotBlank(message = "phone number is required")
 	@Size(min = 10, max = 15, message = "number size should be between 10 and 15 ")
-	private String number;
+	private String phoneNumber;
 }

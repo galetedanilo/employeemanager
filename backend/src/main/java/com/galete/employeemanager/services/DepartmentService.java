@@ -3,8 +3,10 @@ package com.galete.employeemanager.services;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -15,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.galete.employeemanager.entities.Department;
 import com.galete.employeemanager.entities.projections.DepartmentProjection;
 import com.galete.employeemanager.mappers.DepartmentMapper;
-import com.galete.employeemanager.mappers.DepartmentMinMapper;
 import com.galete.employeemanager.repositories.DepartmentRepository;
 import com.galete.employeemanager.requests.DepartmentRequest;
 import com.galete.employeemanager.responses.DepartmentResponse;
@@ -36,29 +37,27 @@ public class DepartmentService implements Serializable {
 	
 	private final DepartmentMapper departmentMapper = DepartmentMapper.INSTANCE;
 	
-	private final DepartmentMinMapper departmentMinMapper = DepartmentMinMapper.INSTANCE;
-	
 	public DepartmentResponse addDepartment(DepartmentRequest departmentRequest) {
-		
-		Boolean departmentExists = departmentRepository.findByName(departmentRequest.getName()).isPresent();
-		
-		if(departmentExists) {
+
+		try {				
+			Department departmentEntity = departmentMapper.departmentRequestToDeparment(departmentRequest);
+			
+			departmentEntity.setCreated(Instant.now());
+			departmentEntity.setUpdated(Instant.now());
+			
+			departmentEntity = departmentRepository.save(departmentEntity);
+			
+			return departmentMapper.departmentToDepartmentResponse(departmentEntity);
+		} catch(DataIntegrityViolationException e) {
 			throw new UniqueDatabaseException("Deparment with " + departmentRequest.getName() + " is already exist");
 		}
-		
-		Department departmentEntity = departmentMapper.departmentRequestToDeparment(departmentRequest);
-		
-		departmentEntity.setCreated(Instant.now());
-		departmentEntity.setUpdated(Instant.now());
-		
-		departmentEntity = departmentRepository.save(departmentEntity);
-		
-		return departmentMapper.departmentToDepartmentResponse(departmentEntity);
 	}
 	
 	@Transactional(readOnly = true)
 	public DepartmentResponse findDepartmentById(Long id) {
-		Department departmentEntity = verifyIfDepartmentExists(id);
+		Optional<Department> departmentOptional = departmentRepository.findById(id);
+		
+		Department departmentEntity = departmentOptional.orElseThrow(() -> new ResourceNotFoundException("Department by id " + id + " was not found"));
 		
 		return departmentMapper.departmentToDepartmentResponse(departmentEntity);
 	}
@@ -75,36 +74,38 @@ public class DepartmentService implements Serializable {
 		List<DepartmentProjection> departmentProjection = departmentRepository.listAllDepartments();		
 		
 		return departmentProjection.stream()
-				.map(obj -> departmentMinMapper.departmentProjectionToDepartmentMinResponse(obj))
+				.map(obj -> departmentMapper.departmentProjectionToDepartmentMinResponse(obj))
 				.collect(Collectors.toList());
 	}
 	
 	@Transactional
 	public DepartmentResponse updateDepartment(Long id, DepartmentRequest departmentRequest) {
-		verifyIfDepartmentExists(id);
 		
-		Department departmentEntity = departmentMapper.departmentRequestToDeparment(departmentRequest);
-		
-		departmentEntity.setId(id);
-		departmentEntity.setUpdated(Instant.now());
-		
-		departmentEntity = departmentRepository.save(departmentEntity);
-		
-		return departmentMapper.departmentToDepartmentResponse(departmentEntity);
+		try {
+			Department departmentEntity = departmentRepository.getById(id);
+					
+			departmentEntity = departmentMapper.departmentRequestToDeparment(departmentRequest);
+			
+			departmentEntity.setId(id);
+			departmentEntity.setUpdated(Instant.now());
+			
+			departmentEntity = departmentRepository.save(departmentEntity);
+			
+			return departmentMapper.departmentToDepartmentResponse(departmentEntity);
+		} catch(ConstraintViolationException e) {
+			throw new UniqueDatabaseException("Deparment with " + departmentRequest.getName() + " is already exist");
+		} catch(EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Resource not found in database with id: " + id);
+		}
 	}
 	
 	public void deleteDepartment(Long id) {
 		try {
 			departmentRepository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
+		} catch(EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Resource not found in database with id: " + id);
 		} catch(DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}
-	}
-	
-	private Department verifyIfDepartmentExists(Long id) {
-		return departmentRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("Department by id %s was not found", id)));
 	}
 }
