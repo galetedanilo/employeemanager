@@ -18,6 +18,7 @@ public interface EmployeeMapper {
 	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "created", ignore = true)
 	@Mapping(target = "updated", ignore = true)
+	@Mapping(target = "department", ignore = true)
 	Employee employeeRequestToEmployee(EmployeeRequest request);
 	
 	@Mapping(source = "id", target = "employeeId")

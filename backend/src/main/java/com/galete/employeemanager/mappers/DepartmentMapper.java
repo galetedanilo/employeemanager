@@ -7,7 +7,6 @@ import org.mapstruct.factory.Mappers;
 import com.galete.employeemanager.entities.Department;
 import com.galete.employeemanager.entities.projections.DepartmentProjection;
 import com.galete.employeemanager.requests.DepartmentRequest;
-import com.galete.employeemanager.requests.mins.DepartmentMinRequest;
 import com.galete.employeemanager.responses.DepartmentResponse;
 import com.galete.employeemanager.responses.mins.DepartmentMinResponse;
 
@@ -23,13 +22,6 @@ public interface DepartmentMapper {
 	
 	@Mapping(source = "id", target = "departmentId")
 	DepartmentResponse departmentToDepartmentResponse(Department entity);
-	
-	@Mapping(target = "name", ignore = true)
-	@Mapping(target = "description", ignore = true)
-	@Mapping(target = "created", ignore = true)
-	@Mapping(target = "updated", ignore = true)
-	@Mapping(target = "imageUrl", ignore = true)
-	Department departmentMinRequestToDepartment(DepartmentMinRequest request);
 	
 	DepartmentMinResponse departmentToDepartmentMinResponse(Department entity);
 	

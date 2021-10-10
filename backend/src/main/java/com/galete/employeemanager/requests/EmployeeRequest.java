@@ -6,12 +6,9 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.br.CPF;
-
-import com.galete.employeemanager.requests.mins.DepartmentMinRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,11 +45,11 @@ public class EmployeeRequest implements Serializable {
 	
 	private String imageUrl;
 	
-	@Valid
-	@NotEmpty
-	private List<PhoneRequest> phones;	
-	
-	@Valid
 	@NotNull(message = "department is required")
-	private DepartmentMinRequest department;
+	private Long department;
+	
+	@NotNull(message = "phone is required")
+	@Valid
+	private List<PhoneRequest> phones;
+	
 }

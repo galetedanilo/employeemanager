@@ -14,5 +14,5 @@ INSERT INTO tb_phones(phone_Type, phone_Number, employee_Id) VALUES ('COMMERCIAL
 INSERT INTO tb_phones(phone_Type, phone_Number, employee_Id) VALUES ('HOME', '+55 11 4579-5989', 2);
 INSERT INTO tb_phones(phone_Type, phone_Number, employee_Id) VALUES ('COMMERCIAL', '+55 11 3265-2149', 2);
 INSERT INTO tb_phones(phone_Type, phone_Number, employee_Id) VALUES ('HOME', '+55 21 89875-3989', 3);
-INSERT INTO tb_phones(phone_Type, phone_Number, employee_Id) VALUES ('MOBILE', '+55 21 98967-5989', 3);
+INSERT INTO tb_phones(phone_Type, phone_Number, employee_Id) VALUES ('MOBILE', '+55 21 98967-5989', 4);
 

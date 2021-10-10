@@ -23,7 +23,8 @@ public class PhoneResponse implements Serializable {
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	private PhoneType type;
+	private PhoneType phoneType;
 	
-	private String number;
+	private String phoneNumber;
+
 }
