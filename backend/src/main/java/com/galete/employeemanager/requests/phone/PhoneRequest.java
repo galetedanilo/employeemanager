@@ -1,4 +1,4 @@
-package com.galete.employeemanager.requests;
+package com.galete.employeemanager.requests.phone;
 
 import java.io.Serializable;
 

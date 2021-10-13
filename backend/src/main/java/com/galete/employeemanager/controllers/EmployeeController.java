@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.galete.employeemanager.requests.EmployeeRequest;
+import com.galete.employeemanager.requests.employee.EmployeeRequest;
 import com.galete.employeemanager.responses.EmployeeResponse;
 import com.galete.employeemanager.services.EmployeeService;
 

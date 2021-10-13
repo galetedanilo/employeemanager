@@ -2,7 +2,7 @@ package com.galete.employeemanager.factories;
 
 import com.galete.employeemanager.entities.Phone;
 import com.galete.employeemanager.entities.enums.PhoneType;
-import com.galete.employeemanager.requests.PhoneRequest;
+import com.galete.employeemanager.requests.phone.PhoneRequest;
 
 public class PhoneFactory {
 

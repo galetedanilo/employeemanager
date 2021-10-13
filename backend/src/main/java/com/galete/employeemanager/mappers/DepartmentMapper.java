@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 
 import com.galete.employeemanager.entities.Department;
 import com.galete.employeemanager.entities.projections.DepartmentProjection;
-import com.galete.employeemanager.requests.DepartmentRequest;
+import com.galete.employeemanager.requests.department.DepartmentRequest;
 import com.galete.employeemanager.responses.DepartmentResponse;
 import com.galete.employeemanager.responses.mins.DepartmentMinResponse;
 

@@ -22,7 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.galete.employeemanager.entities.Employee;
 import com.galete.employeemanager.factories.EmployeeFactory;
 import com.galete.employeemanager.repositories.EmployeeRepository;
-import com.galete.employeemanager.requests.EmployeeRequest;
+import com.galete.employeemanager.requests.employee.EmployeeRequest;
 import com.galete.employeemanager.responses.EmployeeResponse;
 import com.galete.employeemanager.services.exceptions.DatabaseException;
 import com.galete.employeemanager.services.exceptions.ResourceNotFoundException;

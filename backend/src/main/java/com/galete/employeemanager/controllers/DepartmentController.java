@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.galete.employeemanager.requests.DepartmentRequest;
+import com.galete.employeemanager.requests.department.DepartmentRequest;
 import com.galete.employeemanager.responses.DepartmentResponse;
 import com.galete.employeemanager.responses.mins.DepartmentMinResponse;
 import com.galete.employeemanager.services.DepartmentService;

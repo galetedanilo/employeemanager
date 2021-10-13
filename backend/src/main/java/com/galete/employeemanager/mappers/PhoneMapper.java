@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.galete.employeemanager.entities.Phone;
-import com.galete.employeemanager.requests.PhoneRequest;
+import com.galete.employeemanager.requests.phone.PhoneRequest;
 import com.galete.employeemanager.responses.PhoneResponse;
 
 @Mapper

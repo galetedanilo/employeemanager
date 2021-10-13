@@ -24,7 +24,7 @@ public class ControllerExceptionHandler {
 		
 		error.setTimestamp(Instant.now());
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
-		error.setError("Email already in use");
+		error.setError("Unique database exception");
 		error.setPath(request.getRequestURI());
 		error.setMessage(ex.getMessage());
 		

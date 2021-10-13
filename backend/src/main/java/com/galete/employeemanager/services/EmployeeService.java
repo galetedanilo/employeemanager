@@ -16,10 +16,9 @@ import com.galete.employeemanager.entities.Department;
 import com.galete.employeemanager.entities.Employee;
 import com.galete.employeemanager.entities.Phone;
 import com.galete.employeemanager.mappers.EmployeeMapper;
-import com.galete.employeemanager.repositories.DepartmentRepository;
 import com.galete.employeemanager.repositories.EmployeeRepository;
 import com.galete.employeemanager.repositories.PhoneRepository;
-import com.galete.employeemanager.requests.EmployeeRequest;
+import com.galete.employeemanager.requests.employee.EmployeeRequest;
 import com.galete.employeemanager.responses.EmployeeResponse;
 import com.galete.employeemanager.services.exceptions.DatabaseException;
 import com.galete.employeemanager.services.exceptions.ResourceNotFoundException;
@@ -35,7 +34,6 @@ public class EmployeeService implements Serializable {
 
 	private final EmployeeRepository employeeRepository;
 	private final PhoneRepository phoneRepository;
-	private final DepartmentRepository departmentRepository;
 	
 	private final EmployeeMapper employeeMapper = EmployeeMapper.INSTANCE;
 
@@ -43,26 +41,25 @@ public class EmployeeService implements Serializable {
 	public EmployeeResponse addEmployee(EmployeeRequest employeeRequest) {
 		
 		try {
-			Department deparmentEntity = departmentRepository.getById(employeeRequest.getDepartment());
-			
 			Employee employeeEntity = employeeMapper.employeeRequestToEmployee(employeeRequest);
-
+			Department departmentEntity = new Department();
+			
+			departmentEntity.setId(employeeRequest.getDepartment().getId());
+			departmentEntity.setName(employeeRequest.getDepartment().getName());
+			
 			employeeEntity.setEmployeeCode(UUID.randomUUID().toString());
 			employeeEntity.setCreated(Instant.now());
 			employeeEntity.setUpdated(Instant.now());
-			employeeEntity.setDepartment(deparmentEntity);
-			
-			employeeEntity = employeeRepository.save(employeeEntity);
-			
+			employeeEntity.setDepartment(departmentEntity);
+						
 			for(Phone phone : employeeEntity.getPhones()){
+				phone.setId(null);
 				phone.setEmployee(employeeEntity);
 			}
 			
-			phoneRepository.saveAll(employeeEntity.getPhones());
+			employeeEntity = employeeRepository.save(employeeEntity);
 			
 			return employeeMapper.employeeToEmployeeResponse(employeeEntity);
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException("Department by id " + employeeRequest.getDepartment() + " was not found");
 		} catch (DataIntegrityViolationException e) {
 			throw new UniqueDatabaseException("User with " + employeeRequest.getEmail() + " is already exist");
 		}		
@@ -89,13 +86,25 @@ public class EmployeeService implements Serializable {
 
 		try {
 			Employee employeeEntity = employeeRepository.getById(id);
-			Department departmentEntity = departmentRepository.getById(employeeRequest.getDepartment());
+			
+			Department departmentEntity = new Department();
 			
 			employeeEntity = employeeMapper.employeeRequestToEmployee(employeeRequest);
 
 			employeeEntity.setId(id);
 			employeeEntity.setUpdated(Instant.now());
 			employeeEntity.setDepartment(departmentEntity);
+			
+			for(Phone phone : employeeEntity.getPhones()) {
+				
+				if(phone.getId() != null) {
+					phoneRepository.selectPhoneByEmployee(phone, employeeEntity)
+							.orElseThrow(() -> new ResourceNotFoundException("This phone number don't pertence this employee"));
+				}
+				
+				phone.setEmployee(employeeEntity);
+				phoneRepository.save(phone);
+			}
 
 			employeeEntity = employeeRepository.save(employeeEntity);
 
@@ -109,8 +118,6 @@ public class EmployeeService implements Serializable {
 
 	public void deleteEmployee(Long id) {
 		try {	
-			phoneRepository.deleteAllPhonesByEmployee(id);
-			
 			employeeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Resource found in database with id: " + id);
