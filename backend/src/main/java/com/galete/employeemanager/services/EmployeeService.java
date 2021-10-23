@@ -40,6 +40,8 @@ public class EmployeeService implements Serializable {
 	@Transactional
 	public EmployeeResponse addEmployee(EmployeeRequest employeeRequest) {
 		
+		verifyEmployeeByEmailExists(employeeRequest.getEmail());
+		
 		try {
 			Employee employeeEntity = employeeMapper.employeeRequestToEmployee(employeeRequest);
 			Department departmentEntity = new Department();
@@ -110,9 +112,7 @@ public class EmployeeService implements Serializable {
 
 			return employeeMapper.employeeToEmployeeResponse(employeeEntity);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException("Employee or Department by id " + employeeRequest.getDepartment() + " was not found");
-		} catch (DataIntegrityViolationException e) {
-			throw new UniqueDatabaseException("User with " + employeeRequest.getEmail() + " is already exist");
+			throw new ResourceNotFoundException("Resource not found in database with id: " + id);
 		}
 	}
 
@@ -123,6 +123,14 @@ public class EmployeeService implements Serializable {
 			throw new ResourceNotFoundException("Resource found in database with id: " + id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
+		}
+	}
+	
+	private void verifyEmployeeByEmailExists(String email) {
+		boolean check = employeeRepository.findByEmail(email).isPresent();
+		
+		if(check) {
+			throw new UniqueDatabaseException("User with email: " + email + " is already exist");
 		}
 	}
 

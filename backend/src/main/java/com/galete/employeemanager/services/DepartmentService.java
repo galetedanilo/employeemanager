@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -92,8 +91,7 @@ public class DepartmentService implements Serializable {
 			departmentEntity = departmentRepository.save(departmentEntity);
 
 			return departmentMapper.departmentToDepartmentResponse(departmentEntity);
-		} catch (ConstraintViolationException e) {
-			throw new ResourceNotFoundException("Resource not found in database with id: " + id);
+			
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Resource not found in database with id: " + id);
 		}
