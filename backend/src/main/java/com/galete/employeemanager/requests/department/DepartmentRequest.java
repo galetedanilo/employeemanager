@@ -17,11 +17,11 @@ public class DepartmentRequest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotBlank(message = "department name is required")
+	@NotBlank(message = "Department name is required")
 	private String name;
 	
 	private String description;
 	
-	@NotBlank(message = "department image is required")
+	@NotBlank(message = "Department image is required")
 	private String imageUrl;
 }

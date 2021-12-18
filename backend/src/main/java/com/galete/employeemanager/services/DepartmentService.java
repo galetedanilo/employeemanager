@@ -1,6 +1,7 @@
 package com.galete.employeemanager.services;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -42,8 +43,10 @@ public class DepartmentService implements Serializable {
 
 		Department departmentEntity = departmentMapper.departmentRequestToDeparment(departmentRequest);
 
-		departmentEntity.setCreated(Instant.now());
-		departmentEntity.setUpdated(Instant.now());
+		Instant createdAndUpdated = Instant.now();
+
+		departmentEntity.setCreated(createdAndUpdated);
+		departmentEntity.setUpdated(createdAndUpdated);
 
 		departmentEntity = departmentRepository.save(departmentEntity);
 
@@ -83,18 +86,20 @@ public class DepartmentService implements Serializable {
 		try {
 			Department departmentEntity = departmentRepository.getById(id);
 
-			departmentEntity = departmentMapper.departmentRequestToDeparment(departmentRequest);
+			Department departmentUpdateEntity = departmentMapper.departmentRequestToDeparment(departmentRequest);
 
-			departmentEntity.setId(id);
-			departmentEntity.setUpdated(Instant.now());
+			departmentUpdateEntity.setId(id);
+			departmentUpdateEntity.setCreated(departmentEntity.getCreated());
+			departmentUpdateEntity.setUpdated(Instant.now());
 
-			departmentEntity = departmentRepository.save(departmentEntity);
+			departmentUpdateEntity = departmentRepository.save(departmentUpdateEntity);
 
-			return departmentMapper.departmentToDepartmentResponse(departmentEntity);
+			return departmentMapper.departmentToDepartmentResponse(departmentUpdateEntity);
 			
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Resource not found in database with id: " + id);
 		}
+		//DoTo when update and unique: Exception to catch, but I don't know to fix this now.
 	}
 
 	public void deleteDepartment(Long id) {
@@ -108,10 +113,8 @@ public class DepartmentService implements Serializable {
 	}
 	
 	private void verifyDepartmentByNameExists(String name) {
-		boolean check = departmentRepository.findByName(name).isPresent();
-		
-		if(check){
-			throw new UniqueDatabaseException("Deparment with name: " + name + " is already exist");
+		if(departmentRepository.findByName(name).isPresent()){
+			throw new UniqueDatabaseException("Department with name: " + name + " is already exist");
 		}
 	}
 }

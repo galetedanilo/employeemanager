@@ -11,7 +11,7 @@ public class ValidationErrorMessage extends ExceptionResponse implements Seriali
 
 	private static final long serialVersionUID = 1L;
 	
-	private List<FieldMessage> errorFields = new ArrayList<>();
+	private final List<FieldMessage> errorFields = new ArrayList<>();
 	
 	public void addErrorFieldMessage(String field, String message) {
 		errorFields.add(new FieldMessage(field, message));
